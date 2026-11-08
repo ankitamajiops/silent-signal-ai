@@ -1,0 +1,259 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SILENT SIGNAL AI | Community Intelligence</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon">◈</div>
+      <div>
+        <h2>SILENT SIGNAL</h2>
+        <small>COMMUNITY INTELLIGENCE</small>
+      </div>
+    </div>
+
+    <div class="nav-label">MAIN MENU</div>
+    <a class="nav active" href="#overview">▦ Overview</a>
+    <a class="nav" href="#map-section">◎ Community Map</a>
+    <a class="nav" href="#communities">⌁ Silent Communities</a>
+    <a class="nav" href="#reports">▤ Community Reports</a>
+
+    <div class="sidebar-bottom">
+      <div class="status-dot"></div>
+      <span>Prototype environment</span>
+      <p>Disaster Intelligence System</p>
+      <small>ODISHA • INDIA</small>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">DISASTER RESPONSE INTELLIGENCE</div>
+        <h1>Community Overview</h1>
+        <p class="muted">Detecting communities before they become invisible.</p>
+      </div>
+      <div class="top-right">
+        <span class="demo-tag">DEMO DATA</span>
+        <span id="currentDate"></span>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <div class="eyebrow">SILENT SIGNAL INTELLIGENCE ENGINE</div>
+        <h2>Not every silent community is a safe community.</h2>
+        <p>Identify information gaps, connectivity disruptions and communities that may need human verification.</p>
+        <a href="#communities" class="hero-btn">Explore silent signals →</a>
+      </div>
+      <div class="hero-symbol">◈</div>
+    </section>
+
+    <section class="stats" id="overview">
+      <div class="stat-card">
+        <span>MONITORED COMMUNITIES</span>
+        <h2 id="totalCommunities">0</h2>
+        <small>Sample monitoring dataset</small>
+      </div>
+      <div class="stat-card warning">
+        <span>NEED VERIFICATION</span>
+        <h2 id="verificationCount">0</h2>
+        <small>Potential information blind spots</small>
+      </div>
+      <div class="stat-card danger">
+        <span>HIGH PRIORITY</span>
+        <h2 id="highPriority">0</h2>
+        <small>Requires urgent assessment</small>
+      </div>
+      <div class="stat-card blue">
+        <span>OPEN REPORTS</span>
+        <h2 id="totalReports">0</h2>
+        <small>Community-submitted reports</small>
+      </div>
+    </section>
+
+    <section class="content-grid" id="map-section">
+      <div class="panel map-panel">
+        <div class="panel-heading">
+          <div>
+            <h3>Community Intelligence Map</h3>
+            <p>Illustrative community monitoring locations in Odisha</p>
+          </div>
+          <span class="live-label">● DEMO</span>
+        </div>
+        <div id="map"></div>
+        <div class="legend">
+          <span><i class="green"></i> Low priority</span>
+          <span><i class="orange"></i> Verify</span>
+          <span><i class="red"></i> High priority</span>
+        </div>
+      </div>
+
+      <div class="panel insight-panel">
+        <h3>Intelligence Insights</h3>
+        <p class="muted">Patterns detected in sample data</p>
+        <canvas id="riskChart"></canvas>
+        <div class="insight-box">
+          <strong>Why does silence matter?</strong>
+          <p>Missing updates combined with connectivity and service disruptions may indicate communities requiring further assessment.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel community-panel" id="communities">
+      <div class="panel-heading">
+        <div>
+          <h3>Silent Community Detection</h3>
+          <p>Communities prioritized for human verification</p>
+        </div>
+
+        <input
+    type="text"
+    id="searchVillage"
+    placeholder="Search village name..."
+    oninput="renderTable()"
+>
+
+<select id="filterDistrict" onchange="renderTable()">
+    <option value="all">All Districts</option>
+    <option value="Kendrapara">Kendrapara</option>
+    <option value="Jagatsinghpur">Jagatsinghpur</option>
+    <option value="Puri">Puri</option>
+    <option value="Bhadrak">Bhadrak</option>
+    <option value="Ganjam">Ganjam</option>
+</select>
+
+        <select id="filterPriority">
+          <option value="all">All priorities</option>
+          <option value="High">High priority</option>
+          <option value="Verify">Needs verification</option>
+          <option value="Low">Low priority</option>
+        </select>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>COMMUNITY</th>
+              <th>LAST UPDATE</th>
+              <th>CONNECTIVITY</th>
+              <th>SERVICE STATUS</th>
+              <th>RISK SCORE</th>
+              <th>PRIORITY</th>
+              <th>ACTION</th>
+            </tr>
+          </thead>
+          <tbody id="communityTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-grid report-grid" id="reports">
+      <div class="panel">
+        <div class="panel-heading">
+          <div>
+            <h3>Submit Community Report</h3>
+            <p>Share a local observation for assessment</p>
+          </div>
+        </div>
+
+        <form id="reportForm">
+          <label>Community / Village Name</label>
+          <input id="village" placeholder="Enter village name" required>
+
+          <label>District</label>
+          <select id="district" required>
+            <option value="">Select district</option>
+            <option>Bhubaneswar</option>
+            <option>Puri</option>
+            <option>Jagatsinghpur</option>
+            <option>Kendrapara</option>
+            <option>Balasore</option>
+            <option>Ganjam</option>
+            <option>Bhadrak</option>
+            <option>Cuttack</option>
+            <option>Mayurbhanj</option>
+            <option>Khordha</option>
+          </select>
+
+          <label>Observed condition</label>
+          <select id="condition" required>
+            <option value="">Select condition</option>
+            <option value="Connectivity disruption">Connectivity disruption</option>
+            <option value="Road access problem">Road access problem</option>
+            <option value="Water shortage">Water shortage</option>
+            <option value="Electricity disruption">Electricity disruption</option>
+            <option value="No recent community updates">No recent community updates</option>
+            <option value="Multiple service disruptions">Multiple service disruptions</option>
+          </select>
+
+          <label>Communication status</label>
+          <select id="connectivity" required>
+            <option value="">Select status</option>
+            <option value="Available">Available</option>
+            <option value="Unstable">Unstable</option>
+            <option value="Unavailable">Unavailable</option>
+            <option value="Unknown">Unknown</option>
+          </select>
+
+          <label>Additional details</label>
+          <textarea id="details" placeholder="Describe what you observed..."></textarea>
+
+          <button type="submit" class="submit-btn">Submit community report →</button>
+        </form>
+      </div>
+
+      <div class="panel">
+        <h3>Recent Community Reports</h3>
+        <p class="muted">Reports submitted in this demo</p>
+        <div id="recentReports" class="recent-reports">
+          <p class="empty">No new reports yet.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="aboutProject">
+    <h2>About SILENT SIGNAL AI</h2>
+    <p>
+        SILENT SIGNAL AI identifies potential information blind spots
+        affecting communities during disasters by examining missing
+        updates, communication disruptions and essential-service gaps.
+    </p>
+
+    <h3>Methodology</h3>
+    <ul>
+        <li>Collect community status reports.</li>
+        <li>Examine communication and essential-service indicators.</li>
+        <li>Calculate transparent, rule-based risk scores.</li>
+        <li>Prioritize locations for human verification.</li>
+    </ul>
+
+    <h3>Important Limitations</h3>
+    <p>
+        This is a demonstration prototype using sample data.
+        Silence alone does not establish that a community is in danger.
+        All flagged situations require human verification.
+    </p>
+</section>
+
+    <footer>
+      SILENT SIGNAL AI © 2026 | Hackathon Prototype |
+      <span>Sample data – Not an official emergency warning system</span>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
